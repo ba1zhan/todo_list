@@ -1,0 +1,28 @@
+-- database: ./todo.db
+
+-- Чтобы выполнить весь файл, нажмите кнопку ▷ в правом верхнем углу окна.
+
+SELECT * FROM tasks;
+
+    CREATE TABLE IF NOT EXISTS test (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        fio TEXT NOT NULL,
+        number INTEGER NOT NULL
+    );
+
+
+
+    INSERT INTO test (fio, number) VALUES('макулбеков байжан', "43642315");
+
+    INSERT INTO test (fio) VALUES('калыпов аскат');
+
+    INSERT INTO test (fio, number) VALUES('макулбеков байжан', "43242315");
+
+
+
+    SELECT * FROM test;
+
+
+    UPDATE test SET number = 0 WHERE id = 2;
+
+    DELETE FROM test WHERE id = 1
