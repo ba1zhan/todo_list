@@ -1,7 +1,7 @@
 from config import path_db
 from db import queries
 import sqlite3
-
+from datetime import datetime
 
 def init_db():
     conn = sqlite3.connect(path_db)
@@ -27,3 +27,9 @@ def update_task(task_id, new_task):
     conn.commit()
     conn.close()
     
+def delete_task(task_id: int):
+    conn = sqlite3.connect(path_db)
+    cursor = conn.cursor()
+    cursor.execute(queries.delete_task, (task_id,))
+    conn.commit()
+    conn.close()
