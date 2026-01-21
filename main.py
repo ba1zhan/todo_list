@@ -31,11 +31,7 @@ def main(page: ft.Page):
             task_list.controls.remove(task_row)
             task_list.update()
 
-        delete_button = ft.IconButton(
-            icon=ft.icons.DELETE,
-            icon_color=ft.colors.RED,
-            on_click=delete_task
-        )
+        delete_button = ft.IconButton(icon=ft.Icons.DELETE_FOREVER_OUTLINED,icon_color=ft.Colors.RED,on_click=delete_task)
 
         task_row = ft.Row([task_field, edit_button, save_button, delete_button])
         return task_row
