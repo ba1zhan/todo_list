@@ -9,6 +9,12 @@ def main(page: ft.Page):
 
     task_list = ft.Column(spacing=25)
 
+    def load_tasks():
+        task_list.controls.clear()
+        for task_id, task_text in main_db.get_tasks():
+            task_list.controls.append(view_tasks(task_id=task_id, task_text=task_text))
+
+
     def view_tasks(task_id, task_text):
         task_field = ft.TextField(read_only=True, value=task_text, expand=True)
 
@@ -37,8 +43,6 @@ def main(page: ft.Page):
         return task_row
     
     
-
-
     def add_task_db(_):
         if task_input.value:
             task = task_input.value
@@ -52,6 +56,8 @@ def main(page: ft.Page):
     send_task = ft.Row([task_input, task_button])
 
     page.add(send_task, task_list)
+    load_tasks()
+
 
 if __name__ == '__main__':
     main_db.init_db()
