@@ -37,7 +37,7 @@ def delete_task(task_id: int):
     conn.commit()
     conn.close()
 
-def get_tasks():
+def get_tasks(filter_type):
     conn = sqlite3.connect(path_db)
     cursor = conn.cursor()
 
