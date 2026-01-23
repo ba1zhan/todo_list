@@ -9,9 +9,11 @@ def main(page: ft.Page):
 
     task_list = ft.Column(spacing=25)
 
+    filter_type = 'all'
+
     def load_tasks():
         task_list.controls.clear()
-        for task_id, task_text in main_db.get_tasks():
+        for task_id, task_text in main_db.get_tasks(filter_type):
             task_list.controls.append(view_tasks(task_id=task_id, task_text=task_text))
 
 
@@ -42,6 +44,11 @@ def main(page: ft.Page):
         task_row = ft.Row([task_field, edit_button, save_button, delete_button])
         return task_row
     
+    def toggle_task(task_id, is_completed):
+        print(is_completed)
+        main_db.update_task(task_id=task_id, completed=int(is_completed))
+        load_tasks()
+    
     
     def add_task_db(_):
         if task_input.value:
@@ -53,6 +60,19 @@ def main(page: ft.Page):
 
     task_input = ft.TextField(label="Введите задачу:", expand=True, on_submit=add_task_db)
     task_button = ft.IconButton(icon=ft.Icons.ADD, on_click=add_task_db)
+
+    def set_filter(filter_value):
+        nonlocal filter_type
+        filter_type = filter_value
+        load_tasks()
+
+
+    filter_buttons = ft.Row([
+        ft.ElevatedButton('Все задачи', on_click=lambda e: set_filter('all'), icon=ft.Icons.ALL_INBOX, icon_color=ft.Colors.BLACK),
+        ft.ElevatedButton('В работе', on_click=lambda e: set_filter('uncompleted'), icon=ft.Icons.WATCH_LATER, icon_color=ft.Colors.RED),
+        ft.ElevatedButton('Готово', on_click=lambda e: set_filter('completed'), icon=ft.Icons.CHECK_BOX, icon_color=ft.Colors.GREEN)
+    ], alignment=ft.MainAxisAlignment.SPACE_EVENLY)
+
     send_task = ft.Row([task_input, task_button])
 
     page.add(send_task, task_list)
