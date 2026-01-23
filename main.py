@@ -13,12 +13,20 @@ def main(page: ft.Page):
 
     def load_tasks():
         task_list.controls.clear()
-        for task_id, task_text in main_db.get_tasks(filter_type):
-            task_list.controls.append(view_tasks(task_id=task_id, task_text=task_text))
+        for task_id, task_text, completed in main_db.get_tasks(filter_type):
+            task_list.controls.append(view_tasks(task_id=task_id, task_text=task_text, completed=completed))
+
+    def refresh_tasks():
+        task_list.controls.clear()
+        for task_id, task_text in main_db.get_tasks():
+            task_list.controls.append
+
 
 
     def view_tasks(task_id, task_text):
         task_field = ft.TextField(read_only=True, value=task_text, expand=True)
+
+        checkbox = ft.Checkbox(value=bool(completed), on_change=lambda e: toggle_task(task_id=task_id, is_completed=e.control.value))
 
         def enable_edit(_):
             if task_field.read_only == True:
@@ -41,7 +49,7 @@ def main(page: ft.Page):
 
         delete_button = ft.IconButton(icon=ft.Icons.DELETE_FOREVER_OUTLINED,icon_color=ft.Colors.RED,on_click=delete_task)
 
-        task_row = ft.Row([task_field, edit_button, save_button, delete_button])
+        task_row = ft.Row([checkbox ,task_field, edit_button, save_button, delete_button])
         return task_row
     
     def toggle_task(task_id, is_completed):
@@ -75,7 +83,7 @@ def main(page: ft.Page):
 
     send_task = ft.Row([task_input, task_button])
 
-    page.add(send_task, task_list)
+    page.add(send_task, filter_buttons ,task_list)
     load_tasks()
 
 
