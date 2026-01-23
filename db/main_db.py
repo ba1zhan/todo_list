@@ -20,7 +20,7 @@ def add_task(task):
     return task_id 
 
 
-def update_task(task_id, new_task):
+def update_task(task_id, new_task=None, completed=None):
     conn = sqlite3.connect(path_db)
     cursor = conn.cursor()
     if new_task is not None:
@@ -52,3 +52,19 @@ def get_tasks(filter_type):
     tasks = cursor.fetchall()
     conn.close()
     return tasks
+
+def delete_completed_tasks():
+    conn = sqlite3.connect(path_db)
+    cur = conn.cursor()
+    cur.execute(queries.delete_task_completed)
+    conn.commit()
+    conn.close()
+
+
+def load_tasks():
+    conn = sqlite3.connect(path_db)
+    cursor = conn.cursor()
+    cursor.execute("SELECET id, text, completed FROM tasks ORDER BY id")
+    result = cursor.fetchall()
+    conn.close
+    return result

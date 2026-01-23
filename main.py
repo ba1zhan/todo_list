@@ -16,14 +16,15 @@ def main(page: ft.Page):
         for task_id, task_text, completed in main_db.get_tasks(filter_type):
             task_list.controls.append(view_tasks(task_id=task_id, task_text=task_text, completed=completed))
 
-    def refresh_tasks():
+    def refresh_tasks(completed=None):
         task_list.controls.clear()
-        for task_id, task_text in main_db.get_tasks():
-            task_list.controls.append
+        for task_id, task_text, completed in main_db.get_tasks(filter_type):
+            task_list.controls.append(view_tasks(task_id=task_id, task_text=task_text, completed=completed))
 
 
 
-    def view_tasks(task_id, task_text):
+
+    def view_tasks(task_id, task_text=None, completed=None):
         task_field = ft.TextField(read_only=True, value=task_text, expand=True)
 
         checkbox = ft.Checkbox(value=bool(completed), on_change=lambda e: toggle_task(task_id=task_id, is_completed=e.control.value))
@@ -81,9 +82,11 @@ def main(page: ft.Page):
         ft.ElevatedButton('Готово', on_click=lambda e: set_filter('completed'), icon=ft.Icons.CHECK_BOX, icon_color=ft.Colors.GREEN)
     ], alignment=ft.MainAxisAlignment.SPACE_EVENLY)
 
+    clear_button = ft.ElevatedButton('Очистить выполненые', icon=ft.Icons.DELETE_FOREVER, on_click=refresh_tasks)
+
     send_task = ft.Row([task_input, task_button])
 
-    page.add(send_task, filter_buttons ,task_list)
+    page.add(send_task, filter_buttons ,task_list, clear_button)
     load_tasks()
 
 
